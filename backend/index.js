@@ -57,7 +57,11 @@ app.post("/login", async (req, res) => {
       // Generate a JWT token
       jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
         if (err) throw err;
-        res.cookie("token", token).json({ message: "Logged in successfully" });
+        res.cookie("token", token).json({
+          message: "Logged in successfully",
+          id: userDoc._id,
+          username,
+        });
       });
     } else {
       res.status(400).json({ message: "Wrong credentials" });

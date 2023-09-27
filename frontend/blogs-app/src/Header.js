@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 
 export default function Header() {
@@ -22,7 +22,7 @@ export default function Header() {
     setUserInfo(null);
   }
 
-  let username = userInfo?.username;
+  const username = userInfo?.username;
 
   return (
     <header>
