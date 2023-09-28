@@ -121,6 +121,12 @@ app.get("/post", async (req, res) => {
   );
 });
 
+app.get("/post/:id", async (req, res) => {
+  let { id } = req.params;
+  let postDoc = await Post.findById(id).populate("author", ["username"]);
+  res.json(postDoc);
+});
+
 app.listen(4000, () => {
   try {
     console.log("Server is live at port 4000");

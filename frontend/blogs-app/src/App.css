@@ -51,6 +51,12 @@ div.post div.texts h2{
   font-size: 1.8rem;
 }
 
+div.post div.texts a{
+  text-decoration: none;
+  color: initial;
+}
+
+
 div.post p.info{
   margin: 6px 0;
   color: #888;
@@ -97,4 +103,15 @@ button{
 
 form.login h1, form.register h1{
   text-align: center;
+}
+
+div.post-page div.image{
+  /* max-height:90%; */
+  display: flex;
+  overflow:hidden
+}
+
+div.post-page div.image img{
+  object-fit: cover;
+  object-position: center center;
 }
