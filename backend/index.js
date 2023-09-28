@@ -9,6 +9,7 @@ let cookieParser = require("cookie-parser");
 let multer = require("multer");
 let uploadMiddleware = multer({ dest: "uploads/" });
 let fs = require("fs");
+let Post = require("./models/Post");
 
 let salt = bcrypt.genSaltSync(10);
 let secret = "asasdawdvcxvkjbc444nknmxdrgsrg";
@@ -16,6 +17,7 @@ let secret = "asasdawdvcxvkjbc444nknmxdrgsrg";
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(__dirname + "/uploads"));
 
 mongoose.connect(
   "mongodb+srv://raghavendra:raghujingade@cluster0.5bx22xa.mongodb.net/B_Da_Blogger?retryWrites=true&w=majority"
@@ -86,14 +88,37 @@ app.post("/logout", (req, res) => {
   res.cookie("token", "").json("Logged out successfully");
 });
 
-app.post("/post", uploadMiddleware.single("file"), (req, res) => {
+app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
   let { originalname, path } = req.file;
   let parts = originalname.split(".");
   let ext = parts[parts.length - 1];
   let newPath = path + "." + ext;
   fs.renameSync(path, newPath);
 
-  res.json({ ext });
+  let { token } = req.cookies;
+  jwt.verify(token, secret, {}, async (err, info) => {
+    if (err) throw err;
+
+    let { title, summary, content } = req.body;
+    let postDoc = await Post.create({
+      title,
+      summary,
+      content,
+      cover: newPath,
+      author: info.id,
+    });
+
+    res.json(postDoc);
+  });
+});
+
+app.get("/post", async (req, res) => {
+  res.json(
+    await Post.find()
+      .populate("author", ["username"])
+      .sort({ createdAt: -1 })
+      .limit(20)
+  );
 });
 
 app.listen(4000, () => {
