@@ -112,6 +112,35 @@ app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
   });
 });
 
+app.put("/post", uploadMiddleware.single("file"), async (req, res) => {
+  let newPath = null;
+  if (req.file) {
+    let { originalname, path } = req.file;
+    let parts = originalname.split(".");
+    let ext = parts[parts.length - 1];
+    newPath = path + "." + ext;
+    fs.renameSync(path, newPath);
+  }
+
+  let { token } = req.cookies;
+  jwt.verify(token, secret, {}, async (err, info) => {
+    if (err) throw err;
+    let { id, title, summary, content } = req.body;
+    let postDoc = await Post.findById(id);
+    let isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+    if (!isAuthor) {
+      return res.status(400).json("you are not the author");
+    }
+    await postDoc.updateOne({
+      title,
+      summary,
+      content,
+      cover: newPath ? newPath : postDoc.cover,
+    });
+    res.json(postDoc);
+  });
+});
+
 app.get("/post", async (req, res) => {
   res.json(
     await Post.find()
