@@ -33,3 +33,30 @@ B_Da_Blogger is a full-stack web application that allows users to create, edit, 
 
 To run the application locally, follow these steps:
 
+1. Clone this repository to your local machine:
+git clone https://github.com/your-username/my-blogging-app.git
+
+
+2. Install dependencies for both the frontend and backend:
+cd my-blogging-app
+cd frontend
+npm install
+cd ../backend
+npm install
+
+
+3. Create a `.env` file in the `backend` directory with the following environment variables:
+PORT=4000
+MONGODB_URI=your-mongodb-connection-string
+SECRET=your-secret-key
+
+
+4. Start the backend server:
+cd backend
+npm start
+
+
+5. Start the frontend development server:
+cd frontend
+npm start
+
