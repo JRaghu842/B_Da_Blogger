@@ -10,18 +10,17 @@ let multer = require("multer");
 let uploadMiddleware = multer({ dest: "uploads/" });
 let fs = require("fs");
 let Post = require("./models/Post");
+require("dotenv").config();
 
 let salt = bcrypt.genSaltSync(10);
-let secret = "asasdawdvcxvkjbc444nknmxdrgsrg";
+let secret = process.env.SECRET;
 
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
-mongoose.connect(
-  "mongodb+srv://raghavendra:raghujingade@cluster0.5bx22xa.mongodb.net/B_Da_Blogger?retryWrites=true&w=majority"
-);
+mongoose.connect(process.env.MONGO_URL);
 app.post("/register", async (req, res) => {
   try {
     let { username, password } = req.body;
@@ -156,7 +155,7 @@ app.get("/post/:id", async (req, res) => {
   res.json(postDoc);
 });
 
-app.listen(4000, () => {
+app.listen(process.env.PORT, () => {
   try {
     console.log("Server is live at port 4000");
   } catch (error) {
