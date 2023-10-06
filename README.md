@@ -60,3 +60,9 @@ npm start
 cd frontend
 npm start
 
+
+## Deployed links 
+
+Frontend link : https://b-da-blogger.netlify.app/
+Backend link : https://b-blogger.onrender.com/
+
