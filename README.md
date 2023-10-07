@@ -1,7 +1,7 @@
 # B_Da_Blogger
 
 
-B_Da_Blogger is a full-stack web application that allows users to create, edit, and view blog posts. It provides user registration and login functionality to manage their blogs.
+B_Da_Blogger is a full-stack web application  built using MERN stack that allows users to create, edit, and view blog posts. It provides user registration and login functionality to manage their blogs.
 
 ## Features
 
